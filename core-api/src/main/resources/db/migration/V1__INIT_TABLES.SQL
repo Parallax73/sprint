@@ -16,3 +16,22 @@ CREATE TABLE detection_rules (
                                  severity rule_severity NOT NULL,
                                  is_active BOOLEAN DEFAULT TRUE
 );
+
+CREATE TABLE refresh_tokens (
+                                id BIGSERIAL PRIMARY KEY,
+                                token VARCHAR(500) NOT NULL UNIQUE,
+                                token_id VARCHAR(255) NOT NULL UNIQUE,
+                                username VARCHAR(255) NOT NULL,
+                                expires_at TIMESTAMP NOT NULL,
+                                issued_at TIMESTAMP NOT NULL,
+                                revoked BOOLEAN NOT NULL DEFAULT FALSE,
+                                revoked_at TIMESTAMP,
+                                ip_address VARCHAR(45),
+                                user_agent VARCHAR(500),
+                                created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                last_modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_refresh_tokens_username ON refresh_tokens(username);
+CREATE INDEX idx_refresh_tokens_token_id ON refresh_tokens(token_id);
+CREATE INDEX idx_refresh_tokens_expires_at ON refresh_tokens(expires_at);
