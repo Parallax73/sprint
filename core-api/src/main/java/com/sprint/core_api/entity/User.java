@@ -1,12 +1,15 @@
 package com.sprint.core_api.entity;
 
-import com.sprint.core_api.DTO.CreateUserDTO;
-import com.sprint.core_api.utils.UserRole;
+import com.sprint.core_api.dto.request.CreateUserRequest;
+import com.sprint.core_api.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -20,19 +23,33 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
     private String password;
 
+    @Column(name = "full_name")
+    private String fullName;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private UserRole role;
 
-    public User(CreateUserDTO createUserDTO) {
-        this.username = createUserDTO.username();
-        this.password = createUserDTO.password();
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    public User(CreateUserRequest createUserRequest) {
+        this.username = createUserRequest.username();
+        this.password = createUserRequest.password();
         this.role = UserRole.USER_ANALYST;
     }
 
