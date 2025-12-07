@@ -1,4 +1,4 @@
-package com.sprint.core_api.utils;
+package com.sprint.core_api.enums;
 
 public enum UserRole {
     USER_ADMIN,
