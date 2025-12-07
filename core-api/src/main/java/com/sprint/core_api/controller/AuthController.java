@@ -1,0 +1,177 @@
+package com.sprint.core_api.controller;
+
+import com.sprint.core_api. dto.request.CreateUserRequest;
+import com.sprint.core_api.dto.request.LoginRequest;
+import com. sprint.core_api.dto. request.RefreshTokenRequest;
+import com.sprint. core_api.dto.response. AuthTokenResponse;
+import com.sprint. core_api.dto.response. UserResponse;
+import com.sprint.core_api.service.AuthService;
+import com.sprint.core_api.service.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework. http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/core")
+@RequiredArgsConstructor
+@Slf4j
+public class AuthController {
+
+    private final AuthService authService;
+    private final JwtService jwtService;
+
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(
+            @Valid @RequestBody CreateUserRequest request) {
+
+        log.info("Registration attempt for username: {}", request. username());
+
+        UserResponse user = authService.register(request);
+
+        log.info("User registered successfully: {}", user.username());
+
+        return ResponseEntity. status(HttpStatus.CREATED). body(user);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthTokenResponse> login(
+            @Valid @RequestBody LoginRequest request,
+            HttpServletRequest httpRequest) {
+
+        log. info("Login attempt for username: {}", request.username());
+
+        AuthTokenResponse tokens = authService.login(request, httpRequest);
+
+        log.info("User logged in successfully: {}", request.username());
+
+        return ResponseEntity.ok(tokens);
+    }
+
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthTokenResponse> refresh(
+            @Valid @RequestBody RefreshTokenRequest request,
+            HttpServletRequest httpRequest) {
+
+        log. info("Token refresh attempt");
+
+        AuthTokenResponse tokens = jwtService.refreshAccessToken(
+                request.refreshToken(),
+                httpRequest
+        );
+
+        log. info("Token refreshed successfully");
+
+        return ResponseEntity.ok(tokens);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
+
+        log. info("Logout attempt");
+
+        try {
+            String token = extractToken(authHeader);
+            var decodedJWT = jwtService.verifyToken(token);
+            String tokenType = decodedJWT.getClaim("token_type").asString();
+
+            if ("refresh". equals(tokenType)) {
+                String tokenId = decodedJWT.getClaim("jti").asString();
+                jwtService.revokeToken(tokenId);
+            } else {
+                String username = decodedJWT.getSubject();
+                log.info("Logging out user via access token: {}", username);
+            }
+
+            log.info("User logged out successfully");
+
+            return ResponseEntity.noContent().build();
+
+        } catch (Exception e) {
+            log.error("Error during logout: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+    @PostMapping("/logout-all")
+    public ResponseEntity<Void> logoutAll(@RequestHeader("Authorization") String authHeader) {
+
+        log.info("Logout all devices attempt");
+
+        try {
+            String token = extractToken(authHeader);
+            var decodedJWT = jwtService. verifyToken(token);
+            String username = decodedJWT.getSubject();
+
+            jwtService.revokeAllUserTokens(username);
+
+            log.info("User logged out from all devices: {}", username);
+
+            return ResponseEntity.noContent().build();
+
+        } catch (Exception e) {
+            log. error("Error during logout-all: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+    @PostMapping("/validate")
+    public ResponseEntity<TokenValidationResponse> validateToken(
+            @RequestHeader("Authorization") String authHeader) {
+
+        try {
+            String token = extractToken(authHeader);
+            var decodedJWT = jwtService.verifyToken(token);
+
+            String username = decodedJWT. getSubject();
+            String tokenType = decodedJWT. getClaim("token_type").asString();
+
+            TokenValidationResponse response = TokenValidationResponse.builder()
+                    .valid(true)
+                    .username(username)
+                    .tokenType(tokenType)
+                    .expiresAt(decodedJWT.getExpiresAt(). toInstant())
+                    .build();
+
+            return ResponseEntity. ok(response);
+
+        } catch (Exception e) {
+            log.error("Token validation failed: {}", e.getMessage());
+
+            TokenValidationResponse response = TokenValidationResponse.builder()
+                    . valid(false)
+                    . message(e.getMessage())
+                    . build();
+
+            return ResponseEntity.status(HttpStatus. UNAUTHORIZED).body(response);
+        }
+    }
+
+
+    private String extractToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header");
+        }
+        return authHeader.substring(7);
+    }
+
+
+    @lombok.Data
+    @lombok.Builder
+    public static class TokenValidationResponse {
+        private boolean valid;
+        private String username;
+
+        private String tokenType;
+        private java.time.Instant expiresAt;
+        private String message;
+    }
+}
