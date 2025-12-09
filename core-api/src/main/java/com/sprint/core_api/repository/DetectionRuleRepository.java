@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -12,4 +13,5 @@ public interface DetectionRuleRepository extends JpaRepository<DetectionRule, UU
 
     Optional<DetectionRule> findByName(String name);
 
+    List<DetectionRule> findAllByIsActiveTrue();
 }
