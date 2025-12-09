@@ -1,3 +1,7 @@
+/**
+ * User entity that manages user account data and authentication information.
+ * Core domain entity for user management and authorization in the system.
+ */
 package com.sprint.core_api.entity;
 
 import com.sprint.core_api.dto.request.CreateUserRequest;
@@ -12,6 +16,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Represents a user account with authentication and profile information.
+ * Manages user identity, credentials, and role-based access control.
+ */
 @Entity
 @Table(name = "users")
 @Getter
@@ -47,6 +55,9 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    /**
+     * Creates a new user with default USER_ANALYST role from registration request
+     */
     public User(CreateUserRequest createUserRequest) {
         this.username = createUserRequest.username();
         this.password = createUserRequest.password();

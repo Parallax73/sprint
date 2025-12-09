@@ -1,3 +1,7 @@
+/**
+ * JWT authentication filter implementation that validates and processes JWT tokens.
+ * Handles token extraction, validation, and user authentication for protected endpoints.
+ */
 package com.sprint.core_api.security;
 
 import com.sprint.core_api.service.JwtService;
@@ -19,6 +23,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Filter that intercepts requests to validate JWT tokens and authenticate users.
+ * Skips validation for public endpoints defined in PUBLIC_PATHS.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -36,6 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/actuator"
     );
 
+    /**
+     * Processes each request to validate JWT token and authenticate user if token is valid.
+     * Skips validation for public paths and handles token extraction/validation errors.
+     */
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -101,6 +113,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
+    /**
+     * Checks if the given path matches any of the defined public endpoints
+     * that don't require authentication.
+     */
     private boolean isPublicPath(String path) {
         return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
     }

@@ -1,3 +1,7 @@
+/**
+ * JWT-based authentication service that manages access and refresh tokens.
+ * Handles token generation, verification, and lifecycle management for secure user authentication.
+ */
 package com.sprint.core_api.service;
 
 import com.auth0.jwt.JWT;
@@ -23,6 +27,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Service responsible for JWT token operations including generation, validation,
+ * and refresh token management with security measures against token reuse.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,6 +49,10 @@ public class JwtService {
 
     private static final int MAX_REFRESH_TOKENS_PER_USER = 5;
 
+    /**
+     * Generates new access and refresh token pair for a user.
+     * Creates refresh token record and manages token count per user.
+     */
     @Transactional
     public AuthTokenResponse generateTokens(String username, UserRole role, HttpServletRequest request) {
         Instant now = Instant.now();
@@ -70,6 +82,10 @@ public class JwtService {
     }
 
 
+    /**
+     * Validates refresh token and issues new access/refresh token pair.
+     * Implements refresh token rotation for security.
+     */
     @Transactional
     public AuthTokenResponse refreshAccessToken(String refreshTokenStr, HttpServletRequest request) {
         try {
@@ -111,6 +127,10 @@ public class JwtService {
     }
 
 
+    /**
+     * Rotates refresh token by invalidating the old one and generating a new one.
+     * Security measure to prevent refresh token reuse.
+     */
     @Transactional
     protected String rotateRefreshToken(RefreshToken oldToken, HttpServletRequest request) {
 
@@ -199,6 +219,10 @@ public class JwtService {
     }
 
 
+    /**
+     * Scheduled job to remove expired refresh tokens from database.
+     * Runs daily at 2 AM.
+     */
     @Scheduled(cron = "0 0 2 * * *")
     @Transactional
     public void cleanupExpiredTokens() {

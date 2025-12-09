@@ -1,3 +1,7 @@
+/**
+ * Handles unauthorized access attempts in the JWT authentication flow.
+ * Provides standardized JSON response for authentication failures.
+ */
 package com.sprint.core_api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +19,18 @@ import java.time. Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Entry point that gets triggered when unauthorized requests are made to secured endpoints.
+ * Returns a structured JSON response with error details.
+ */
 @Component
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    /**
+     * Handles unauthorized access by returning a JSON response with error details.
+     * Sets 401 status code and includes timestamp, path and error message.
+     */
     @Override
     public void commence(
             HttpServletRequest request,

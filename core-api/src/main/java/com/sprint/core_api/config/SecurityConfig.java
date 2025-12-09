@@ -1,3 +1,8 @@
+/**
+ * Spring Security configuration that defines authentication, authorization,
+ * and security filter chains for the application. Implements JWT-based
+ * stateless authentication with role-based access control.
+ */
 package com.sprint.core_api.config;
 
 import com.sprint.core_api.security.JwtAuthenticationEntryPoint;
@@ -26,6 +31,10 @@ import org.springframework.web.cors. UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Central security configuration class that sets up JWT authentication,
+ * configures security filters, and defines authorization rules
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
@@ -37,7 +46,8 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     /**
-     * Security filter chain - Spring Security 7 style
+     * Configures the security filter chain with JWT authentication, CORS,
+     * authorization rules, and exception handling
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -93,7 +103,8 @@ public class SecurityConfig {
     }
 
     /**
-     * Authentication provider with custom UserDetailsService
+     * Creates DaoAuthenticationProvider using custom UserDetailsService
+     * for database-backed user authentication
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -102,7 +113,8 @@ public class SecurityConfig {
     }
 
     /**
-     * Password encoder - BCrypt with strength 12
+     * Configures BCrypt password encoder with strength 12 for secure
+     * password hashing
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

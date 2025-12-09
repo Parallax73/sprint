@@ -1,3 +1,7 @@
+/**
+ * Authentication REST API controller that handles user registration, login, token management,
+ * and session control for the core API.
+ */
 package com.sprint.core_api.controller;
 
 import com.sprint.core_api. dto.request.CreateUserRequest;
@@ -15,6 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework. http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Handles authentication-related HTTP requests including user registration, login,
+ * token refresh, and session management.
+ */
 @RestController
 @RequestMapping("/api/v1/core")
 @RequiredArgsConstructor
@@ -71,6 +79,11 @@ public class AuthController {
         return ResponseEntity.ok(tokens);
     }
 
+    /**
+     * Handles user logout by invalidating the provided token.
+     * For refresh tokens, revokes the specific token.
+     * For access tokens, logs the logout attempt.
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authHeader) {
 
@@ -100,6 +113,9 @@ public class AuthController {
     }
 
 
+    /**
+     * Logs out user from all devices by revoking all active tokens for the user.
+     */
     @PostMapping("/logout-all")
     public ResponseEntity<Void> logoutAll(@RequestHeader("Authorization") String authHeader) {
 
@@ -156,6 +172,10 @@ public class AuthController {
     }
 
 
+    /**
+     * Extracts JWT token from Authorization header by removing "Bearer " prefix.
+     * Throws IllegalArgumentException if header is invalid.
+     */
     private String extractToken(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new IllegalArgumentException("Invalid Authorization header");

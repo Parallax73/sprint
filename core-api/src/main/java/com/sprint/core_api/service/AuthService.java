@@ -1,3 +1,7 @@
+/**
+ * Authentication service that handles user registration and login functionality.
+ * Manages JWT token generation and user credential validation.
+ */
 package com.sprint.core_api.service;
 
 import com.sprint.core_api.dto.request.CreateUserRequest;
@@ -17,6 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+/**
+ * Service responsible for user authentication operations including registration and login.
+ * Handles password encryption, JWT token generation, and user validation.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +36,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
 
+    /**
+     * Registers a new user after validating username and email uniqueness.
+     * Encrypts password and persists user details in the database.
+     */
     @Transactional
     public UserResponse register(CreateUserRequest request) {
         if (userRepository.findByUsername(request.username()). isPresent()) {
@@ -55,6 +67,10 @@ public class AuthService {
     }
 
 
+    /**
+     * Authenticates user credentials and generates JWT tokens upon successful login.
+     * Uses Spring Security's authentication manager for validation.
+     */
     @Transactional
     public AuthTokenResponse login(LoginRequest request, HttpServletRequest httpRequest) {
 
