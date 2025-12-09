@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/core-api/pom.xml" />
         <option value="$PROJECT_DIR$/discovery/pom.xml" />
         <option value="$PROJECT_DIR$/analyzer/pom.xml" />
+        <option value="$PROJECT_DIR$/agent/pom.xml" />
       </list>
     </option>
   </component>
