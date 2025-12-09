@@ -69,7 +69,8 @@ public class SecurityConfig {
                                 "/actuator/info",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui. html"
+                                "/swagger-ui. html",
+                                "/error"
                         ).permitAll()
 
                         // Admin-only endpoints
@@ -108,8 +109,9 @@ public class SecurityConfig {
      */
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        // Spring Security 7 requires BOTH parameters
-        return new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     /**
