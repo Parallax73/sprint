@@ -42,6 +42,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RuleEvaluationService ruleEvaluationService;
+    private final SecurityLogService securityLogService;
 
 
     /**
@@ -105,6 +106,15 @@ public class AuthService {
             log.warn("Security Alert: Rule '{}' triggered for user '{}'", rule.getName(), user.getUsername());
 
             if (rule.getSeverity() == Severity.CRITICAL) {
+
+                securityLogService.saveLog(
+                        user.getUsername(),
+                        "LOGIN_ATTEMPT",
+                        getClientIP(httpRequest),
+                        "BLOCKED",
+                        "Blocked by rule: " + rule.getName()
+                );
+
                 throw new RuntimeException("Login blocked by security rule: " + rule.getName());
             }
         }
@@ -116,6 +126,14 @@ public class AuthService {
         );
 
         log.info("User logged in: {}", user.getUsername());
+
+        securityLogService.saveLog(
+                user.getUsername(),
+                "LOGIN_ATTEMPT",
+                getClientIP(httpRequest),
+                "SUCCESS",
+                "Login successful"
+        );
 
         return tokens;
     }
