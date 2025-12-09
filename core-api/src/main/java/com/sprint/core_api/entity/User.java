@@ -61,6 +61,8 @@ public class User {
     public User(CreateUserRequest createUserRequest) {
         this.username = createUserRequest.username();
         this.password = createUserRequest.password();
+        this.email = createUserRequest.email();
+        this.fullName = createUserRequest.fullName();
         this.role = UserRole.USER_ANALYST;
     }
 
