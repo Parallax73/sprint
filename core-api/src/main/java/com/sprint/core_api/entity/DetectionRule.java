@@ -9,7 +9,9 @@ import com.sprint.core_api.dto.request.CreateRuleRequest;
 import com.sprint.core_api.enums.Severity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -21,7 +23,9 @@ import java.util.UUID;
 @Table(name = "detection_rules")
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetectionRules {
+@Getter
+@Setter
+public class DetectionRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,7 +47,7 @@ public class DetectionRules {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
-    public DetectionRules(CreateRuleRequest request){
+    public DetectionRule(CreateRuleRequest request){
         this.name = request.name();
         this.description = request.description();
         this.condition_logic = request.conditionLogic();
