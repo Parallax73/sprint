@@ -1,6 +1,8 @@
 package com.sprint.core_api.repository;
 
 import com.sprint.core_api.entity.SecurityLog;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,4 +12,5 @@ public interface SecurityLogRepository extends JpaRepository<SecurityLog, UUID> 
 
     List<SecurityLog> findByUsernameOrderByCreatedAtDesc(String username);
 
+    Page<SecurityLog> findByUsername(String username, Pageable pageable);
 }
