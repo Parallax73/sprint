@@ -92,7 +92,7 @@ public class RuleService {
         DetectionRule rule = ruleRepository.findById(id)
                 .orElseThrow(()-> new NotFindResourceException("Rule not found: " + id));
 
-        rule.setCondition_logic(conditionLogic);
+        rule.setConditionLogic(conditionLogic);
 
         return new RuleResponse(rule.getId(), rule.getName(), rule.getSeverity(), rule.isActive());
     }
