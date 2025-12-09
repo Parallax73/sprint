@@ -9,6 +9,7 @@ import com.sprint.core_api.dto.request.LoginRequest;
 import com. sprint.core_api.dto. response.AuthTokenResponse;
 import com.sprint.core_api.dto.response.UserResponse;
 import com.sprint.core_api. entity.User;
+import com.sprint.core_api.exception.ExistingResourceException;
 import com. sprint.core_api.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,22 +43,17 @@ public class AuthService {
      */
     @Transactional
     public UserResponse register(CreateUserRequest request) {
-        if (userRepository.findByUsername(request.username()). isPresent()) {
-            throw new RuntimeException("Username already exists: " + request.username());
+        if (userRepository.findByUsername(request.username()).isPresent()) {
+            throw new ExistingResourceException("Username already exists: " + request.username());
         }
-
 
         if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new RuntimeException("Email already exists: " + request. email());
+            throw new ExistingResourceException("Email already exists: " + request.email());
         }
 
 
-        User user = new User();
-        user.setUsername(request.username());
-        user. setEmail(request.email());
-        user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole(request.role());
-        user.setFullName(request.fullName());
+        User user = new User(request);
+
 
         User savedUser = userRepository.save(user);
 
