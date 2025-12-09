@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="discovery" />
         <module name="agent" />
+        <module name="gateway" />
       </profile>
       <profile name="Annotation profile for analyzer" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -30,6 +31,7 @@
       <module name="analyzer" options="-parameters" />
       <module name="core-api" options="-parameters" />
       <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="ingest" options="-parameters" />
     </option>
   </component>
