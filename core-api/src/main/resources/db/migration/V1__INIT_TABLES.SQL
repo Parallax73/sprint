@@ -42,8 +42,20 @@ CREATE TABLE security_logs (
                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE alerts (
+                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                        rule_name VARCHAR(255) NOT NULL,
+                        severity VARCHAR(50) NOT NULL,
+                        username VARCHAR(255) NOT NULL,
+                        source_ip VARCHAR(45) NOT NULL,
+                        triggered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        details TEXT
+);
+
 CREATE INDEX idx_refresh_tokens_username ON refresh_tokens(username);
 CREATE INDEX idx_refresh_tokens_token_id ON refresh_tokens(token_id);
 CREATE INDEX idx_refresh_tokens_expires_at ON refresh_tokens(expires_at);
 CREATE INDEX idx_security_logs_username ON security_logs(username);
 CREATE INDEX idx_security_logs_created_at ON security_logs(created_at);
+CREATE INDEX idx_alerts_source_ip ON alerts(source_ip);
+CREATE INDEX idx_alerts_username ON alerts(username);
