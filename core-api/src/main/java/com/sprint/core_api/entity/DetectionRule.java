@@ -38,7 +38,7 @@ public class DetectionRule {
     private String description;
 
     @Column(name = "condition_logic", nullable = false)
-    private String condition_logic;
+    private String conditionLogic;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -50,7 +50,7 @@ public class DetectionRule {
     public DetectionRule(CreateRuleRequest request){
         this.name = request.name();
         this.description = request.description();
-        this.condition_logic = request.conditionLogic();
+        this.conditionLogic = request.conditionLogic();
         this.severity = request.severity();
         this.isActive = request.isActive();
     }
