@@ -6,21 +6,27 @@ package com.sprint.core_api.service;
 
 import com.sprint.core_api.dto.request.CreateUserRequest;
 import com.sprint.core_api.dto.request.LoginRequest;
-import com. sprint.core_api.dto. response.AuthTokenResponse;
+import com.sprint.core_api.dto.response.AuthTokenResponse;
 import com.sprint.core_api.dto.response.UserResponse;
-import com.sprint.core_api. entity.User;
+import com.sprint.core_api.entity.DetectionRule;
+import com.sprint.core_api.entity.User;
+import com.sprint.core_api.enums.Severity;
 import com.sprint.core_api.exception.ExistingResourceException;
-import com. sprint.core_api.repository.UserRepository;
+import com.sprint.core_api.repository.UserRepository;
+import com.sprint.core_api.utils.SecurityEvent;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j. Slf4j;
-import org. springframework.security.authentication.AuthenticationManager;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service responsible for user authentication operations including registration and login.
@@ -35,6 +41,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RuleEvaluationService ruleEvaluationService;
 
 
     /**
@@ -53,8 +60,7 @@ public class AuthService {
 
 
         User user = new User(request);
-
-
+        user.setPassword(passwordEncoder.encode(request.password()));
         User savedUser = userRepository.save(user);
 
         log.info("New user registered: {}", savedUser.getUsername());
@@ -81,8 +87,29 @@ public class AuthService {
         User user = userRepository.findByUsername(request.username())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("User-Agent", httpRequest.getHeader("User-Agent"));
+        metadata.put("Time", java.time.Instant.now().toString());
 
-        AuthTokenResponse tokens = jwtService. generateTokens(
+        SecurityEvent event = new SecurityEvent(
+                "LOGIN_ATTEMPT",
+                user.getUsername(),
+                getClientIP(httpRequest),
+                0,
+                metadata
+        );
+
+        List<DetectionRule> triggeredRules = ruleEvaluationService.evaluate(event);
+
+        for (DetectionRule rule : triggeredRules) {
+            log.warn("Security Alert: Rule '{}' triggered for user '{}'", rule.getName(), user.getUsername());
+
+            if (rule.getSeverity() == Severity.CRITICAL) {
+                throw new RuntimeException("Login blocked by security rule: " + rule.getName());
+            }
+        }
+
+        AuthTokenResponse tokens = jwtService.generateTokens(
                 user.getUsername(),
                 user.getRole(),
                 httpRequest
@@ -93,6 +120,13 @@ public class AuthService {
         return tokens;
     }
 
+    private String getClientIP(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
+    }
 
     private UserResponse mapToUserResponse(User user) {
         return new UserResponse(
@@ -103,6 +137,6 @@ public class AuthService {
                 user.getRole(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
-                );
+        );
     }
 }
