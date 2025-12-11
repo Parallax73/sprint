@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {Auth} from './features/auth/auth';
+import { TopbarComponent } from './layout/topbar/topbar.component';
 
 
 @Component({
   selector: 'app-root',
-  imports: [Auth],
+  imports: [Auth, TopbarComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
