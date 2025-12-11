@@ -19,9 +19,9 @@ import {FormsModule} from '@angular/forms';
         InputTextModule
 
     ],
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
+  templateUrl: './auth.html',
+  styleUrl: './auth.scss',
 })
-export class Login {
+export class Auth {
   checked = signal<boolean>(true);
 }

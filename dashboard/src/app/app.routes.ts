@@ -4,7 +4,7 @@ export const routes: Routes = [
 
   {
     path: 'login',
-    loadComponent: () => import('./features/login/login').then(m => m.Login)
+    loadComponent: () => import('./features/auth/auth').then(m => m.Auth)
   }
 
 
