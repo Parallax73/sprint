@@ -1,0 +1,121 @@
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc; /* Very light grey background */
+  padding: 20px;
+}
+
+/* 2. The Card Styling */
+.login-card {
+  background: #ffffff;
+  padding: 3rem; /* Spacious padding inside */
+  border-radius: 16px; /* Rounded corners */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Soft shadow */
+  width: 100%;
+  max-width: 450px; /* Limits width on large screens */
+}
+
+/* 3. Typography & Header */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.875rem; /* ~30px */
+  font-weight: 600;
+  color: #0f172a; /* Dark slate */
+  margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+  color: #64748b; /* Slate grey */
+  margin: 0;
+}
+
+.link {
+  color: #10b981; /* THE GREEN COLOR from your image */
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* 4. Form Layout */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between inputs */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Space between label and input */
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #334155;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px; /* Slightly rounded inputs */
+}
+
+/* 5. Password Eye Icon positioning */
+.password-wrapper {
+  position: relative;
+}
+.eye-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+/* 6. Checkbox & Links Row */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -0.5rem; /* Pull it up slightly */
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #334155;
+}
+
+/* 7. The Green Button */
+.submit-btn {
+  width: 100%;
+  background-color: #10b981; /* Green matching the image */
+  border: none;
+  padding: 0.875rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  background-color: #059669; /* Darker green on hover */
+}
