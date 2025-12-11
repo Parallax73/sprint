@@ -54,7 +54,7 @@
 
 .link {
   color: var(--primary-color, #22c55e); /* PrimeNG green-500 */
-  font-weight: 500;
+  font-weight: 400;
   text-decoration: none;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -85,7 +85,8 @@
   font-size: 0.95rem;
 }
 
-.input-field {
+/* Updated: Use ::ng-deep to ensure styles apply to PrimeNG components */
+:host ::ng-deep .input-field {
   width: 100%;
   padding:  0.875rem 1rem;
   border-radius: 8px;
@@ -96,31 +97,35 @@
   transition: border-color 0.2s ease;
 }
 
-.input-field::placeholder {
+:host ::ng-deep .input-field::placeholder {
   color: #666666;
 }
 
-.input-field:focus {
+:host ::ng-deep .input-field:focus {
   outline:  none;
   border-color:  var(--primary-color, #22c55e);
 }
 
-
-.password-wrapper {
-  position: relative;
+/* PrimeNG Password Specific Fixes */
+:host ::ng-deep .p-password {
+  width: 100%;
+  position: relative; /* Ensure icon positions correctly */
 }
 
-.eye-icon {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #94a3b8;
+:host ::ng-deep .p-password-input {
+  width: 100%;
+  padding-right: 2.5rem !important; /* Make room for the eye icon so text doesn't overlap */
+}
+
+/* Eye Icon Styling */
+:host ::ng-deep .p-password .pi {
   cursor: pointer;
+  color: #94a3b8;
   transition: color 0.2s ease;
+  right: 15px !important; /* Position it nicely inside the padding */
 }
 
-.eye-icon:hover {
+:host ::ng-deep .p-password .pi:hover {
   color: #e0e0e0;
 }
 
