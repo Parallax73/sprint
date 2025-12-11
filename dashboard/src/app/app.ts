@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import {Auth} from './features/auth/auth';
+import { RouterOutlet } from '@angular/router';
 import { TopbarComponent } from './layout/topbar/topbar.component';
-
 
 @Component({
   selector: 'app-root',
-  imports: [Auth, TopbarComponent],
+  imports: [
+    TopbarComponent,
+    RouterOutlet
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
