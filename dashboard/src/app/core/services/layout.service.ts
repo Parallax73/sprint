@@ -30,8 +30,8 @@ export class LayoutService {
   toggleDarkMode() {
     const isDark = !this._layoutConfig().darkTheme;
     
-    if ((document as any).startViewTransition) {
-      (document as any).startViewTransition(() => {
+    if ('startViewTransition' in document) {
+      document.startViewTransition(() => {
         this._layoutConfig.update(config => ({
           ...config,
           darkTheme: isDark
