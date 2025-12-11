@@ -1,0 +1,44 @@
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--surface-card);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 1rem 2rem;
+}
+
+.topbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0.75rem 1rem;
+  }
+  
+  .logo svg {
+    width: 32px;
+    height: 32px;
+  }
+}

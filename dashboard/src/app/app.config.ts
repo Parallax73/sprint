@@ -12,10 +12,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     providePrimeNG({
       theme: {
-        preset: Lara,
-        options: {
-          darkTheme: true
-        }
+        preset: Lara
       }
     })
   ]
