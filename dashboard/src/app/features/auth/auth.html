@@ -16,7 +16,7 @@
           <a class="link" (click)="authStateChange()">Create today!</a>
         } @else {
           Already have an account?
-          <a class="link" (click)="authStateChange()">Log in</a>
+          <a class="link" (click)="authStateChange()">Login</a>
         }
       </p>
     </div>
@@ -27,6 +27,11 @@
         <div class="form-group">
           <label for="fullname">Full Name</label>
           <input pInputText id="fullname" type="text" placeholder="John Doe" class="input-field" />
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input pInputText id="username" type="text" placeholder="JohnDoe1" class="input-field" />
         </div>
       }
 

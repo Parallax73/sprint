@@ -1,12 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
-
+@import "primeicons/primeicons.css";
 
 :root {
   --font-family:  'Roboto', sans-serif;
   --font-family-heading: 'Josefin Sans', sans-serif;
   --primary-color: #22c55e;
-  
+
   --background: #f8f9fa;
   --surface-ground: #f8f9fa;
   --surface-section: #ffffff;
@@ -14,11 +14,11 @@
   --surface-overlay: #ffffff;
   --surface-border: #dfe7ef;
   --surface-hover: #f6f9fc;
-  
+
   --text-color: #495057;
   --text-color-secondary: #6c757d;
   --primary-color-text: #ffffff;
-  
+
   color-scheme: light;
 }
 
@@ -30,11 +30,11 @@
   --surface-overlay: #2a2a2a;
   --surface-border: #3f3f3f;
   --surface-hover: #3a3a3a;
-  
+
   --text-color: #e5e7eb;
   --text-color-secondary: #9ca3af;
   --primary-color-text: #ffffff;
-  
+
   color-scheme: dark;
 }
 
