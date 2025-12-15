@@ -1,0 +1,121 @@
+<div class="rules-container">
+
+  <div class="rules-header">
+    <div class="header-content">
+      <h1>Rules Management</h1>
+      <p>Create and tune SpEL detection logic</p>
+    </div>
+    <p-button
+      label="Create Rule"
+      icon="pi pi-plus"
+      (onClick)="openCreateDialog()">
+    </p-button>
+  </div>
+
+  <div class="table-card">
+    <p-table [value]="rules" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 25%">Name</th>
+          <th style="width: 40%">Description</th>
+          <th style="width: 15%">Severity</th>
+          <th style="width: 10%">Status</th>
+          <th style="width: 10%"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rule>
+        <tr>
+          <td class="rule-name">{{ rule.name }}</td>
+          <td class="rule-desc">{{ rule.description }}</td>
+          <td>
+            <span class="badge severity" [class]="rule.severity.toLowerCase()">
+              {{ rule.severity }}
+            </span>
+          </td>
+          <td>
+            <p-toggleswitch
+              [(ngModel)]="rule.isActive"
+              (onChange)="toggleRule(rule)">
+            </p-toggleswitch>
+          </td>
+          <td>
+            <button class="icon-btn" title="Edit Rule">
+              <i class="pi pi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-dialog
+    header="Create Detection Rule"
+    [(visible)]="displayCreateDialog"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false">
+
+    <div class="form-grid">
+
+      <div class="form-field">
+        <label>Rule Name</label>
+        <input pInputText [(ngModel)]="newRule.name" placeholder="e.g., SQL Injection Detection" />
+      </div>
+
+      <div class="form-field">
+        <label>Severity</label>
+        <p-select
+          [options]="severities"
+          [(ngModel)]="newRule.severity"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{'width':'100%'}">
+        </p-select>
+      </div>
+
+      <div class="form-field full-width">
+        <label>Description</label>
+        <input pInputText [(ngModel)]="newRule.description" placeholder="Describe the intent of this rule" />
+      </div>
+
+      <div class="form-field full-width">
+        <label>Condition Logic (SpEL)</label>
+        <div class="editor-wrapper">
+          <textarea
+            pTextarea
+            [(ngModel)]="newRule.logic"
+            rows="6"
+            class="code-editor"
+            placeholder="eventType == 'AUTH_FAILURE' && riskScore > 50">
+          </textarea>
+          <div class="editor-helper">
+            <i class="pi pi-info-circle"></i>
+            <span>Available fields: sourceIp, username, eventType, timestamp, userAgent...</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="dialog-footer">
+        <p-button
+          label="Validate Syntax"
+          icon="pi pi-check-circle"
+          [outlined]="true"
+          severity="secondary"
+          [loading]="isValidating"
+          (onClick)="validateSyntax()">
+        </p-button>
+        <p-button
+          label="Save Rule"
+          icon="pi pi-save"
+          (onClick)="saveRule()">
+        </p-button>
+      </div>
+    </ng-template>
+
+  </p-dialog>
+
+</div>
