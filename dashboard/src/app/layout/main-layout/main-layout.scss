@@ -1,0 +1,11 @@
+.layout-content {
+  padding: 2rem;
+  margin-top: 48px;
+  min-height: calc(100vh - 56px);
+  background-color: var(--background);
+  transition: margin-left 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.layout-content.shifted {
+  margin-left: 250px;
+}

@@ -1,1 +1,7 @@
-<p>main-layout works!</p>
+<app-subbar></app-subbar>
+
+<app-sidebar></app-sidebar>
+
+<div class="layout-content" [class.shifted]="sidebarService.isOpen()">
+  <router-outlet></router-outlet>
+</div>
