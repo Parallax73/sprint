@@ -1,1 +1,13 @@
-<p>subbar works!</p>
+<div class="subbar">
+  <div class="subbar-left">
+    <p-button
+      icon="pi pi-bars"
+      [text]="true"
+      severity="secondary"
+      (onClick)="sidebarService.toggle()">
+    </p-button>
+    <span class="page-title">Home</span>
+  </div>
+  <div class="subbar-right">
+  </div>
+</div>
