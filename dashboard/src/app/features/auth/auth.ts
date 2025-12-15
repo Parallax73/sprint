@@ -30,7 +30,7 @@ export class Auth {
   authState = signal<boolean>(true);
 
   // "Remember me" a checker
-  checked = signal<boolean>(true);
+  checked = signal<boolean>(false);
   password = signal<string>('');
 
   authStateChange() {
