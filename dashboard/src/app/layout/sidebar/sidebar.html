@@ -1,4 +1,5 @@
 <div class="sidebar" [class.visible]="sidebarService.isOpen()">
+
   <div class="sidebar-header">
     <p-button
       icon="pi pi-bars"
@@ -10,8 +11,24 @@
   </div>
 
   <div class="menu-items">
-    <p>Dashboard</p>
-    <p>Alerts</p>
-    <p>Rules</p>
+    <p-menu [model]="items" />
   </div>
+
+  <div class="sidebar-footer">
+
+    <div class="status-indicator">
+      <span class="dot"></span>
+      <span>System Healthy</span>
+    </div>
+
+    <p-button
+      label="Logout"
+      icon="pi pi-sign-out"
+      severity="secondary"
+      [outlined]="true"
+      class="w-full"
+      styleClass="w-full">
+    </p-button>
+  </div>
+
 </div>

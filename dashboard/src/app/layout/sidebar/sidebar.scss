@@ -11,6 +11,10 @@
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  /* NEW: Use Flexbox to manage vertical layout */
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar.visible {
@@ -24,6 +28,7 @@
   gap: 0.5rem;
   padding: 0 1rem;
   border-bottom: 1px solid var(--surface-border);
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .sidebar-title {
@@ -31,6 +36,51 @@
   color: var(--text-color);
 }
 
+/* NEW: Menu Container takes available space */
 .menu-items {
+  flex-grow: 1;
+  padding: 0; /* REMOVED padding so menu touches edges */
+  overflow-y: auto;
+}
+
+/* NEW: Override PrimeNG Menu Styles */
+:host ::ng-deep .p-menu {
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  padding: 0.5rem 0;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-content {
+  background: transparent;
+}
+
+:host ::ng-deep .p-menu .p-menuitem-link {
+  padding: 0.75rem 1.5rem; /* Wider click area */
+}
+
+/* NEW: Bottom Footer Section */
+.sidebar-footer {
   padding: 1rem;
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-card); /* Opaque background */
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-color-secondary);
+  margin-bottom: 1rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background-color: #22c55e; /* Green-500 */
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(34, 197, 94, 0.4);
 }
