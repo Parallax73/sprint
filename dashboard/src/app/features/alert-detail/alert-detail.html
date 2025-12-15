@@ -1,0 +1,84 @@
+<div class="incident-layout" *ngIf="alert">
+
+  <div class="context-column">
+    <div class="incident-header">
+       <span class="badge severity large" [class]="alert.severity.toLowerCase()">
+          {{ alert.severity }}
+       </span>
+      <h2>{{ alert.ruleName }}</h2>
+    </div>
+
+    <div class="kv-list">
+      <div class="kv-item">
+        <label>Attacker</label>
+        <div class="value flex-row">
+          <i class="pi pi-globe"></i>
+          <span>{{ alert.sourceIp }}</span>
+          <span class="flag" *ngIf="alert.country">({{ alert.country }})</span>
+        </div>
+      </div>
+      <div class="kv-item">
+        <label>Target</label>
+        <div class="value">{{ alert.target }}</div>
+      </div>
+      <div class="kv-item">
+        <label>Time</label>
+        <div class="value">{{ alert.timestamp }}</div>
+      </div>
+    </div>
+
+    <div class="workflow-actions">
+      <h3>Workflow</h3>
+      <div class="action-group">
+        <label>Status</label>
+        <p-select
+          [options]="statusOptions"
+          [(ngModel)]="alert.status"
+          optionLabel="label"
+          optionValue="value"
+          [style]="{'width':'100%'}">
+        </p-select>
+      </div>
+      <div class="action-buttons">
+        <p-button
+          label="Block IP"
+          severity="danger"
+          icon="pi pi-ban"
+          class="w-full"
+          styleClass="w-full"
+          (onClick)="blockIp()">
+        </p-button>
+        <p-button
+          label="Save & Close"
+          severity="secondary"
+          [outlined]="true"
+          class="w-full"
+          styleClass="w-full"
+          (onClick)="saveAndClose()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="evidence-column">
+    <p-tabs value="0">
+      <p-tablist>
+        <p-tab value="0">Raw Log</p-tab>
+        <p-tab value="1">JSON</p-tab>
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <div class="code-block">
+            <pre>{{ alert.rawLog }}</pre>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="json-viewer">
+            <pre>{{ alert.rawLog }}</pre>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+
+</div>

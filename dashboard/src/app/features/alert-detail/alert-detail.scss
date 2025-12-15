@@ -1,0 +1,145 @@
+:host {
+  display: block;
+  --critical-color: #ef4444;
+  --high-color: #f97316;
+  --medium-color: #eab308;
+  --low-color: #3b82f6;
+  --resolved-color: #22c55e;
+  --investigating-color: #a855f7;
+  --font-family-heading: 'Josefin Sans', sans-serif;
+}
+
+/* Incident Modal Layout */
+.incident-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  min-height: 500px;
+}
+
+@media (max-width: 900px) {
+  .incident-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* Left Column */
+.context-column {
+  border-right: 1px solid var(--surface-border);
+  padding-right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.incident-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
+}
+
+.badge.severity.critical { background-color: rgba(239, 68, 68, 0.15); color: var(--critical-color); }
+.badge.severity.high { background-color: rgba(249, 115, 22, 0.15); color: var(--high-color); }
+.badge.severity.medium { background-color: rgba(234, 179, 8, 0.15); color: var(--medium-color); }
+.badge.severity.low { background-color: rgba(59, 130, 246, 0.15); color: var(--low-color); }
+
+.badge.large {
+  font-size: 14px;
+  padding: 6px 16px;
+  align-self: flex-start;
+}
+
+.incident-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-family: var(--font-family-heading);
+}
+
+.kv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kv-item label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-color-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.kv-item .value {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workflow-actions {
+  margin-top: auto;
+  background: var(--surface-ground);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.workflow-actions h3 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+  text-transform: uppercase;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Right Column */
+.evidence-column {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.code-block {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 16px;
+  border-radius: 6px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  overflow: auto;
+  height: 100%;
+  max-height: 500px;
+  border: 1px solid #333;
+}
+
+.code-block pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+:host ::ng-deep .p-tabpanels {
+  padding: 1rem 0 0 0;
+}
