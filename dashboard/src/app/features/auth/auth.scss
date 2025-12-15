@@ -1,25 +1,22 @@
-// Container wraper, black/greyish backgroun
 .login-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0a0a0a;
+  background-color: var(--background);
   padding: 20px;
 }
 
-// 2.The Card Styling
 .login-card {
-  background:  #1a1a1a;
+  background: var(--surface-card);
   padding: 3rem;
   border-radius:  16px;
-  box-shadow:  0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 450px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--surface-border);
 }
 
-// 3.Typography and header
 .header {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -39,21 +36,21 @@
 
 .title {
   font-family: var(--font-family-heading, 'Josefin Sans', sans-serif);
-  font-size: 1.875rem; /* ~30px */
+  font-size: 1.875rem;
   font-weight: 600;
-  color: #ffffff;
-  margin:  0 0 0.75rem 0;
+  color: var(--text-color);
+  margin: 0 0 0.75rem 0;
 }
 
 .subtitle {
-  font-family: var(--font-family, 'Roboto', sans-serif);
-  color: #a0a0a0;
+  font-family:  var(--font-family, 'Roboto', sans-serif);
+  color: var(--text-color-secondary);
   margin: 0;
   font-size: 0.95rem;
 }
 
 .link {
-  color: var(--primary-color, #22c55e); /* PrimeNG green-500 */
+  color: var(--primary-color, #22c55e);
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
@@ -65,98 +62,106 @@
   text-decoration: underline;
 }
 
-/* 4.Form Layout */
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap:  1.5rem;
 }
 
 .form-group {
-  display:  flex;
-  flex-direction:  column;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap:  0.5rem;
 }
 
 .form-group label {
   font-family: var(--font-family, 'Roboto', sans-serif);
   font-weight: 500;
-  color: #e0e0e0;
+  color: var(--text-color);
   font-size: 0.95rem;
 }
 
-/* Updated: Use ::ng-deep to ensure styles apply to PrimeNG components */
 :host ::ng-deep .input-field {
   width: 100%;
-  padding:  0.875rem 1rem;
+  padding: 0.875rem 1rem;
   border-radius: 8px;
-  background-color: #0f0f0f;
-  border: 1px solid #333333;
-  color: #ffffff;
+  background-color: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
   font-family: var(--font-family, 'Roboto', sans-serif);
   transition: border-color 0.2s ease;
 }
 
 :host ::ng-deep .input-field::placeholder {
-  color: #666666;
+  color: var(--text-color-secondary);
 }
 
 :host ::ng-deep .input-field:focus {
-  outline:  none;
-  border-color:  var(--primary-color, #22c55e);
+  outline: none;
+  border-color: var(--primary-color, #22c55e);
 }
 
-/* PrimeNG Password Specific Fixes */
 :host ::ng-deep .p-password {
   width: 100%;
-  position: relative; /* Ensure icon positions correctly */
 }
 
-:host ::ng-deep .p-password-input {
+:host ::ng-deep .p-password .p-inputtext {
   width: 100%;
-  padding-right: 2.5rem !important; /* Make room for the eye icon so text doesn't overlap */
+  padding: 0.875rem 1rem;
+  border-radius: 8px;
+  background-color: var(--surface-ground);
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  transition: border-color 0.2s ease;
 }
 
-/* Eye Icon Styling */
-:host ::ng-deep .p-password .pi {
-  cursor: pointer;
-  color: #94a3b8;
-  transition: color 0.2s ease;
-  right: 15px !important; /* Position it nicely inside the padding */
+:host ::ng-deep .p-password .p-inputtext::placeholder {
+  color: var(--text-color-secondary);
 }
 
-:host ::ng-deep .p-password .pi:hover {
-  color: #e0e0e0;
+:host ::ng-deep .p-password .p-inputtext:focus {
+  outline: none;
+  border-color: var(--primary-color, #22c55e);
+  box-shadow: none;
 }
+
 
 .form-actions {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   margin-top: -0.5rem;
 }
 
 .remember-me {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: #e0e0e0;
+  gap:  0.5rem;
+  color: var(--text-color);
   font-family: var(--font-family, 'Roboto', sans-serif);
   font-size: 0.9rem;
 }
 
 .remember-me input[type="checkbox"] {
-  accent-color: var(--primary-color, #22c55e);
+  accent-color:  var(--primary-color, #22c55e);
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
+.forgot-password {
+  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-size: 0.9rem;
+  margin-left: auto;
+}
 
 .submit-btn {
   width: 100%;
   background-color: var(--primary-color, #22c55e);
-  color: #000000; /* Black text on green button */
+  color: #000000;
   border: none;
   padding: 0.875rem;
   border-radius: 8px;
