@@ -1,10 +1,10 @@
-import { Component, signal} from '@angular/core';
-import {ButtonDirective, ButtonModule} from "primeng/button";
-import {Checkbox, CheckboxModule} from "primeng/checkbox";
-import {InputText, InputTextModule} from "primeng/inputtext";
-import {PasswordModule} from "primeng/password";
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import { ButtonDirective, ButtonModule } from "primeng/button";
+import { Checkbox, CheckboxModule } from "primeng/checkbox";
+import { InputText, InputTextModule } from "primeng/inputtext";
+import { PasswordModule } from "primeng/password";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -29,11 +29,11 @@ export class Auth {
   // Auth state true = login, false = register
   authState = signal<boolean>(true);
 
-  // Remember me checker
+  // "Remember me" a checker
   checked = signal<boolean>(true);
   password = signal<string>('');
 
-  authStateChange(){
+  authStateChange() {
     this.authState.update(state => !state);
   }
 
