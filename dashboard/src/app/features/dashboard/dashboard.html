@@ -1,5 +1,76 @@
-<div class="container">
-  <div class="top-row">
-    <h1>Dashboard</h1>
+<div class="dashboard-container">
+
+  <div class="kpi-grid">
+    @for (card of kpiCards; track card.title) {
+      <div class="card kpi-card">
+        <div class="card-header">{{ card.title }}</div>
+        <div class="card-value" [class.text-danger]="card.isCritical">{{ card.value }}</div>
+        @if (card.label) {
+          <div class="card-label">{{ card.label }}</div>
+        }
+      </div>
+    }
   </div>
+
+  <div class="middle-row">
+
+    <div class="card widget-feed">
+      <h3>Live Threat Feed</h3>
+      <div class="log-container">
+        <div class="log-header">
+          <span class="col-time">Time</span>
+          <span class="col-event">Event Type</span>
+          <span class="col-ip">Source IP</span>
+        </div>
+        <div class="log-list">
+          @for (log of threatFeed; track log.time) {
+            <div class="log-row">
+              <span class="col-time">{{ log.time }}</span>
+              <span class="col-event text-highlight">{{ log.event }}</span>
+              <span class="col-ip">{{ log.ip }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="card widget-chart">
+      <h3>Attacks by Severity</h3>
+      <div class="chart-container">
+        <div class="donut-placeholder">
+          <div class="donut-segment high"></div>
+          <div class="donut-segment medium"></div>
+          <div class="donut-segment low"></div>
+          <div class="donut-hole">
+            <span>Total</span>
+            <strong>1240</strong>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="dot high"></span> High</div>
+          <div class="legend-item"><span class="dot medium"></span> Medium</div>
+          <div class="legend-item"><span class="dot low"></span> Low</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-row">
+    <div class="card widget-top-attackers">
+      <h3>Top Attackers</h3>
+      <div class="attacker-list">
+        @for (attacker of topAttackers; track attacker.ip) {
+          <div class="attacker-row">
+            <span class="attacker-ip">{{ attacker.ip }}</span>
+            <div class="progress-track">
+              <div class="progress-fill" [style.width.%]="(attacker.count / 500) * 100"></div>
+            </div>
+            <span class="attacker-count">{{ attacker.count }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
 </div>
