@@ -1,0 +1,89 @@
+<div class="user-container">
+
+  <div class="user-header">
+    <h1>User Management</h1>
+    <div class="header-actions">
+      <p-button label="New User" icon="pi pi-plus" (click)="createNew()"></p-button>
+      <p-button label="Export CSV" icon="pi pi-download" [outlined]="true" severity="secondary"></p-button>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Status</label>
+      <select class="custom-select"><option>All</option><option>Active</option><option>Inactive</option></select>
+    </div>
+    <div class="filter-group">
+      <label>Search</label>
+      <input type="text" class="custom-input" placeholder="Username or Email...">
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table class="user-table">
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>ID</th>
+        <th>Last Login</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+          <tr class="clickable-row" (click)="openDetail(user)">
+            <td>
+              <span
+                class="badge status clickable"
+                [class]="user.status.toLowerCase()"
+                (click)="cycleStatus(user, $event)">
+                {{ user.status }}
+              </span>
+            </td>
+            <td class="username-cell">{{ user.username }}</td>
+            <td class="email-cell">
+              <a href="mailto:{{user.email}}" class="link" (click)="$event.stopPropagation()">
+                {{ user.email }}
+              </a>
+            </td>
+            <td class="id-cell" title="{{user.id}}">
+              {{ user.id.substring(0, 8) }}...
+            </td>
+            <td class="timestamp">{{ user.lastLogin }}</td>
+            <td>
+              <div class="actions">
+                <button class="icon-btn" title="Edit User" (click)="$event.stopPropagation(); openDetail(user)">
+                  <i class="pi pi-pencil"></i>
+                </button>
+                <button class="icon-btn delete" title="Delete" (click)="$event.stopPropagation()">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p-dialog
+    [(visible)]="displayDetailDialog"
+    [modal]="true"
+    [style]="{ width: '50vw', maxWidth: '800px' }"
+    [draggable]="false"
+    [resizable]="false"
+    [header]="selectedUser?.id ? 'Edit User' : 'New User'">
+
+    @if (selectedUser) {
+      <div class="p-4">
+        <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+        <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+        <p><strong>ID:</strong> {{ selectedUser.id }}</p>
+      </div>
+    }
+
+  </p-dialog>
+
+</div>
