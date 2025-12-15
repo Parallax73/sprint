@@ -20,8 +20,31 @@
         icon="pi pi-question-circle"
         severity="secondary"
         pTooltip="About"
-        tooltipPosition="bottom">
-      </p-button>
+        tooltipPosition="bottom"
+        (onClick)="showDialog()"
+      />
+      <p-dialog header="About Sprint" draggable="false" [modal]="true" [(visible)]="isHelpVisible" [style]="{ width: '25rem' }">
+
+        <div class="flex flex-column gap-3">
+          <p class="m-0 text-color-secondary" style="line-height: 1.6;">
+            <strong>Sprint</strong> is a real-time Threat Intelligence Platform designed for modern SOCs.
+            It ingests high-volume logs, applies dynamic detection rules, and provides instant situational awareness
+            to identify and block active threats in milliseconds.
+          </p>
+
+          <div class="mt-2">
+            <a href="https://github.com/Parallax73/sprint" target="_blank" rel="noopener noreferrer"
+               pButton
+               label="Parallax73 / sprint"
+               icon="pi pi-github"
+               class="w-full"
+               severity="secondary"
+               [outlined]="true">
+            </a>
+          </div>
+        </div>
+
+      </p-dialog>
 
       <p-button
         [rounded]="true"
