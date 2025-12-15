@@ -1,0 +1,62 @@
+<div class="audit-container">
+
+  <div class="audit-header">
+    <div class="header-content">
+      <h1>Audit Log</h1>
+      <p>Compliance trail: Who watches the watchers?</p>
+    </div>
+    <div class="header-actions">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText placeholder="Search logs..." />
+      </span>
+      <p-button
+        label="Export Report"
+        icon="pi pi-file-export"
+        [outlined]="true"
+        severity="secondary">
+      </p-button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <p-table
+      [value]="logs"
+      [tableStyle]="{ 'min-width': '60rem' }"
+      styleClass="p-datatable-sm p-datatable-gridlines"
+      [paginator]="true"
+      [rows]="15"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 15%">Time</th>
+          <th style="width: 15%">Actor</th>
+          <th style="width: 15%">Action</th>
+          <th style="width: 40%">Details</th>
+          <th style="width: 15%">IP Address</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-log>
+        <tr>
+          <td class="col-time">{{ log.timestamp }}</td>
+          <td class="col-actor">
+            <i class="pi pi-user"></i>
+            {{ log.actor }}
+          </td>
+          <td>
+            <span class="badge action" [class]="log.action.toLowerCase()">
+              {{ log.action }}
+            </span>
+          </td>
+          <td class="col-details" [title]="log.details">{{ log.details }}</td>
+          <td class="col-ip">{{ log.ip }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+
+</div>
