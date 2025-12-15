@@ -19,8 +19,38 @@
   gap: 0.5rem;
 }
 
-.page-title {
+::ng-deep .custom-breadcrumb .p-breadcrumb {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  --p-breadcrumb-padding: 0;
+  --p-breadcrumb-background: transparent;
+}
+
+::ng-deep .custom-breadcrumb .p-breadcrumb-list {
+  margin: 0;
+  padding: 0;
+}
+
+::ng-deep .custom-breadcrumb .p-menuitem-text,
+::ng-deep .custom-breadcrumb .p-breadcrumb-home {
+  font-family: var(--font-family-heading);
   font-weight: 600;
   font-size: 1rem;
   color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+::ng-deep .custom-breadcrumb .p-breadcrumb-separator {
+  color: var(--text-color-secondary);
+  margin: 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+::ng-deep .custom-breadcrumb .p-menuitem-link:hover .p-menuitem-text,
+::ng-deep .custom-breadcrumb .p-menuitem-link:hover .p-breadcrumb-home {
+  color: var(--primary-color);
 }
