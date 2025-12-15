@@ -47,13 +47,13 @@
   padding: 10px 0;
 }
 
-. form-field {
+.form-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.form-field. full-width {
+.form-field .full-width {
   grid-column: span 2;
 }
 
