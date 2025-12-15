@@ -11,14 +11,23 @@
   overflow-y: auto;
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  /* NEW: Use Flexbox to manage vertical layout */
   display: flex;
   flex-direction: column;
 }
 
 .sidebar.visible {
   transform: translateX(0);
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  backdrop-filter: blur(1px);
 }
 
 .sidebar-header {
@@ -28,7 +37,7 @@
   gap: 0.5rem;
   padding: 0 1rem;
   border-bottom: 1px solid var(--surface-border);
-  flex-shrink: 0; /* Prevent header from shrinking */
+  flex-shrink: 0;
 }
 
 .sidebar-title {
@@ -36,14 +45,12 @@
   color: var(--text-color);
 }
 
-/* NEW: Menu Container takes available space */
 .menu-items {
   flex-grow: 1;
-  padding: 0; /* REMOVED padding so menu touches edges */
+  padding: 0;
   overflow-y: auto;
 }
 
-/* NEW: Override PrimeNG Menu Styles */
 :host ::ng-deep .p-menu {
   width: 100%;
   border: none;
@@ -57,14 +64,13 @@
 }
 
 :host ::ng-deep .p-menu .p-menuitem-link {
-  padding: 0.75rem 1.5rem; /* Wider click area */
+  padding: 0.75rem 1.5rem;
 }
 
-/* NEW: Bottom Footer Section */
 .sidebar-footer {
   padding: 1rem;
   border-top: 1px solid var(--surface-border);
-  background: var(--surface-card); /* Opaque background */
+  background: var(--surface-card);
   flex-shrink: 0;
 }
 
@@ -80,7 +86,7 @@
 .dot {
   width: 8px;
   height: 8px;
-  background-color: #22c55e; /* Green-500 */
+  background-color: #22c55e;
   border-radius: 50%;
   box-shadow: 0 0 4px rgba(34, 197, 94, 0.4);
 }

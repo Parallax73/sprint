@@ -22,6 +22,11 @@ export class Sidebar  implements OnInit {
         label: 'Dashboard',
         items: [
           {
+            label: 'Home',
+            icon: 'pi pi-home',
+            routerLink: '/home'
+          },
+          {
             label: 'Alerts',
             icon: 'pi pi-bell'
           },

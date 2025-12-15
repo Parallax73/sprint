@@ -1,3 +1,7 @@
+@if (sidebarService.isOpen()) {
+  <div class="sidebar-backdrop" (click)="sidebarService.toggle()"></div>
+}
+
 <div class="sidebar" [class.visible]="sidebarService.isOpen()">
 
   <div class="sidebar-header">
