@@ -9,7 +9,7 @@ export interface LayoutConfig {
 })
 export class LayoutService {
   private _layoutConfig = signal<LayoutConfig>({
-    darkTheme: false
+    darkTheme: true
   });
 
   layoutConfig = this._layoutConfig.asReadonly();
@@ -29,7 +29,7 @@ export class LayoutService {
 
   toggleDarkMode() {
     const isDark = !this._layoutConfig().darkTheme;
-    
+
     if ('startViewTransition' in document) {
       document.startViewTransition(() => {
         this._layoutConfig.update(config => ({
