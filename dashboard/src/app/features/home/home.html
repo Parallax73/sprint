@@ -1,1 +1,22 @@
-<app-sidebar></app-sidebar>
+<div class="hub-container">
+  <div class="hub-header">
+    <h1>Welcome back! user.Fullname.</h1>
+  </div>
+
+  <div class="card-grid">
+    @for (card of cards; track card.title) {
+      <div class="hub-card" [routerLink]="card.link">
+        <div class="card-body">
+          <h2>{{ card.title }}</h2>
+          <p>{{ card.description }}</p>
+        </div>
+        <div class="card-footer">
+          <span>Enter section &rarr;</span>
+        </div>
+      </div>
+    }
+    @empty {
+      <p>No cards available.</p>
+    }
+  </div>
+</div>

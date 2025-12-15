@@ -1,0 +1,79 @@
+.hub-container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: var(--font-family), serif;
+}
+
+.hub-header {
+  margin-bottom: 30px;
+}
+
+.hub-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: var(--font-family-heading), serif;
+  margin-bottom: 8px;
+}
+
+.hub-header p {
+  color: var(--text-color-secondary);
+  font-size: 16px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.hub-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.hub-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: var(--surface-hover);
+}
+
+.card-body h2 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 24px;
+  color: var(--primary-color);
+  font-family: var(--font-family-heading), serif;
+  font-weight: 600;
+}
+
+.card-body p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color);
+  margin: 0;
+}
+
+.card-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-color);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.hub-card:hover .card-footer {
+  opacity: 1;
+}
