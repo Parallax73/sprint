@@ -1,5 +1,6 @@
 app-root {
   display: block;
   padding-top: 80px;
-  background-color: #3a3a3a;
+  background-color: var(--background);
+  min-height: 100vh;
 }
