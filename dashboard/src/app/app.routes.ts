@@ -35,6 +35,10 @@ export const routes: Routes = [
       {
         path: 'audit-logs',
         loadComponent: () => import('./features/audit/audit').then(m => m.Audit)
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./features/users/users').then(m => m.Users)
       }
     ]
   }
