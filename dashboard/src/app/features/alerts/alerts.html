@@ -1,0 +1,82 @@
+<div class="alert-container">
+
+  <div class="alert-header">
+    <h1>Security Alerts</h1>
+    <p-button label="Export CSV" icon="pi pi-download" [outlined]="true" severity="secondary"></p-button>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Status</label>
+      <select class="custom-select"><option>All</option></select>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table class="alert-table">
+      <thead>
+      <tr>
+        <th>Severity</th>
+        <th>Timestamp</th>
+        <th>Rule Name</th>
+        <th>Source</th>
+        <th>Target</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (alert of alerts; track alert.id) {
+          <tr class="clickable-row" (click)="openDetail(alert)">
+            <td>
+              <span class="badge severity" [class]="alert.severity.toLowerCase()">
+                {{ alert.severity }}
+              </span>
+            </td>
+            <td class="timestamp">{{ alert.timestamp }}</td>
+            <td class="rule-name">{{ alert.ruleName }}</td>
+            <td>
+              <a href="javascript:void(0)" class="source-link" (click)="$event.stopPropagation()">
+                {{ alert.sourceIp }}
+              </a>
+            </td>
+            <td>{{ alert.target }}</td>
+            <td>
+              <span
+                class="badge status clickable"
+                [class]="alert.status.toLowerCase()"
+                (click)="cycleStatus(alert, $event)">
+                {{ alert.status }}
+              </span>
+            </td>
+            <td>
+              <div class="actions">
+                <button class="icon-btn" title="View Details" (click)="$event.stopPropagation(); openDetail(alert)">
+                  <i class="pi pi-eye"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p-dialog
+    [(visible)]="displayDetailDialog"
+    [modal]="true"
+    [style]="{ width: '80vw', maxWidth: '1200px' }"
+    [draggable]="false"
+    [resizable]="false"
+    [header]="'Incident Details: ' + (selectedAlert?.id || '')">
+
+    @if (selectedAlert) {
+      <app-alert-detail
+        [alert]="selectedAlert"
+        (onClose)="onDialogClose()">
+      </app-alert-detail>
+    }
+
+  </p-dialog>
+
+</div>
