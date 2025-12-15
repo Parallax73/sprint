@@ -1,9 +1,5 @@
 :host {
   display: block;
-  --danger-color: #ef4444;
-  --warning-color: #fbbf24;
-  --success-color: #22c55e;
-  --font-mono: 'Courier New', Courier, monospace;
 }
 
 .dashboard-container {
@@ -18,14 +14,6 @@
   gap: 24px;
   min-height: 100vh;
   margin-top: 3%;
-}
-
-.card {
-  background-color: var(--surface-card);
-  border: 1px solid var(--surface-border);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 h3 {
@@ -97,7 +85,7 @@ h3 {
   flex: 1;
   display: flex;
   flex-direction: column;
-  font-family: var(--font-mono);
+  font-family: var(--font-family);
   font-size: 13px;
   overflow: hidden;
 }
@@ -134,90 +122,142 @@ h3 {
 
 .col-event {
   flex: 1;
-  color: var(--primary-color);
+  padding: 0 12px;
 }
 
-.col-ip {
-  width: 140px;
+.col-severity {
+  width: 80px;
   text-align: right;
-  color: var(--text-color);
+  font-weight: 600;
 }
 
-.widget-chart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.severity-high {
+  color: var(--danger-color);
 }
 
-.chart-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+.severity-medium {
+  color: var(--warning-color);
 }
 
-.donut-placeholder {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  background: conic-gradient(
-      var(--danger-color) 0deg 90deg,
-      var(--warning-color) 90deg 200deg,
-      var(--success-color) 200deg 360deg
-  );
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24px;
+.severity-low {
+  color: var(--success-color);
 }
 
-.donut-hole {
-  width: 120px;
-  height: 120px;
-  background-color: var(--surface-card);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-color);
-}
-
-.donut-hole span {
-  font-size: 12px;
-  color: var(--text-color-secondary);
-}
-
-.donut-hole strong {
-  font-size: 24px;
-  font-family: var(--font-family-heading);
-}
-
-.chart-legend {
-  display: flex;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.legend-item {
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-color-secondary);
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-color);
+  font-family: var(--font-family-heading);
+}
+
+.bottom-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .bottom-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.severity-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.severity-bar {
   display: flex;
   align-items: center;
-  font-size: 13px;
-  gap: 6px;
-  color: var(--text-color);
+  gap: 12px;
+  font-size: 14px;
+}
+
+.severity-label {
+  width: 80px;
+  font-weight: 600;
+}
+
+.bar-track {
+  flex: 1;
+  height: 8px;
+  background-color: var(--surface-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.bar-fill.critical {
+  background-color: var(--danger-color);
+}
+
+.bar-fill.high {
+  background-color: var(--warning-color);
+}
+
+.bar-fill.medium {
+  background-color: var(--warning-color);
+}
+
+.bar-fill.low {
+  background-color: var(--success-color);
+}
+
+.severity-count {
+  width: 40px;
+  text-align: right;
+  font-weight: 600;
+  font-family: var(--font-family-heading);
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
 }
 
-.dot.high { background-color: var(--danger-color); }
-.dot.medium { background-color: var(--warning-color); }
-.dot.low { background-color: var(--success-color); }
+.dot.critical {
+  background-color: var(--danger-color);
+}
+
+.dot.high {
+  background-color: var(--danger-color);
+}
+
+.dot.medium {
+  background-color: var(--warning-color);
+}
+
+.dot.low {
+  background-color: var(--success-color);
+}
 
 .attacker-list {
   display: flex;
@@ -234,7 +274,7 @@ h3 {
 
 .attacker-ip {
   width: 140px;
-  font-family: var(--font-mono);
+  font-family: var(--font-family);
 }
 
 .progress-track {
@@ -260,6 +300,12 @@ h3 {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

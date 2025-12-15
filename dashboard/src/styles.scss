@@ -1,40 +1,55 @@
-/* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
 @import "primeicons/primeicons.css";
 
 :root {
   --font-family:  'Roboto', sans-serif;
   --font-family-heading: 'Josefin Sans', sans-serif;
-  --primary-color: #22c55e;
 
-  --background: #f8f9fa;
+  --primary-color: #22c55e;
+  --primary-color-hover: #16a34a;
+  --primary-color-text: #ffffff;
+
+  --background:  #f8f9fa;
   --surface-ground: #f8f9fa;
   --surface-section: #ffffff;
   --surface-card: #ffffff;
   --surface-overlay: #ffffff;
   --surface-border: #dfe7ef;
-  --surface-hover: #f6f9fc;
+  --surface-hover:  #f6f9fc;
 
   --text-color: #495057;
   --text-color-secondary: #6c757d;
-  --primary-color-text: #ffffff;
+
+  --critical-color: #ef4444;
+  --high-color: #f97316;
+  --medium-color: #eab308;
+  --low-color: #3b82f6;
+
+  --resolved-color: #22c55e;
+  --investigating-color:  #a855f7;
+
+  --danger-color: #ef4444;
+  --warning-color: #fbbf24;
+  --success-color: #22c55e;
+
+  --action-update-color: #3b82f6;
+  --action-block-color: #ef4444;
+  --action-resolve-color: #22c55e;
+  --action-system-color: #a855f7;
 
   color-scheme: light;
 }
 
 :root.app-dark {
   --background: #1e1e1e;
-  --surface-ground: #1e1e1e;
+  --surface-ground:  #1e1e1e;
   --surface-section: #2a2a2a;
   --surface-card: #2a2a2a;
   --surface-overlay: #2a2a2a;
   --surface-border: #3f3f3f;
   --surface-hover: #3a3a3a;
-
   --text-color: #e5e7eb;
   --text-color-secondary: #9ca3af;
-  --primary-color-text: #ffffff;
-
   color-scheme: dark;
 }
 
@@ -43,7 +58,7 @@ body {
   background: var(--background);
   color: var(--text-color);
   margin: 0;
-  padding: 0;
+  padding:  0;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -56,14 +71,117 @@ h1, h2, h3, h4, h5, h6,
 .p-tabview-title,
 .p-menubar-root-list > .p-menuitem > .p-menuitem-link,
 .p-breadcrumb,
-.p-steps .p-steps-title {
-  font-family: var(--font-family-heading);
-}
-
+.p-steps .p-steps-title,
 .title,
 .subtitle,
 .header {
   font-family: var(--font-family-heading);
+}
+
+.card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table-card {
+  background-color: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight:  600;
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
+}
+
+.badge .large {
+  font-size: 14px;
+  padding: 6px 16px;
+}
+
+.badge .severity.critical {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--critical-color);
+}
+
+.badge .severity.high {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: var(--high-color);
+}
+
+.badge .severity.medium {
+  background-color: rgba(234, 179, 8, 0.15);
+  color: var(--medium-color);
+}
+
+.badge .severity.low {
+  background-color:  rgba(59, 130, 246, 0.15);
+  color: var(--low-color);
+}
+
+.badge .status.new {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--low-color);
+  border: 1px solid var(--low-color);
+}
+
+.badge .status.investigating {
+  background-color: rgba(168, 85, 247, 0.1);
+  color: var(--investigating-color);
+  border: 1px solid var(--investigating-color);
+}
+
+.badge .status.resolved {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: var(--resolved-color);
+  border: 1px solid var(--resolved-color);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  color: var(--text-color-secondary);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background-color: var(--surface-hover);
+  color: var(--primary-color);
+}
+
+.link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--primary-color-hover);
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 ::view-transition-old(root),

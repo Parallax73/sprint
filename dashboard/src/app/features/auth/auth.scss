@@ -10,7 +10,7 @@
 .login-card {
   background: var(--surface-card);
   padding: 3rem;
-  border-radius:  16px;
+  border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 450px;
@@ -35,7 +35,7 @@
 }
 
 .title {
-  font-family: var(--font-family-heading, 'Josefin Sans', sans-serif);
+  font-family: var(--font-family-heading);
   font-size: 1.875rem;
   font-weight: 600;
   color: var(--text-color);
@@ -43,14 +43,14 @@
 }
 
 .subtitle {
-  font-family:  var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   color: var(--text-color-secondary);
   margin: 0;
   font-size: 0.95rem;
 }
 
 .link {
-  color: var(--primary-color, #22c55e);
+  color: var(--primary-color);
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
@@ -58,24 +58,24 @@
 }
 
 .link:hover {
-  color: #16a34a;
+  color: var(--primary-color-hover);
   text-decoration: underline;
 }
 
 .form-container {
   display: flex;
   flex-direction: column;
-  gap:  1.5rem;
+  gap: 1.5rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap:  0.5rem;
+  gap: 0.5rem;
 }
 
 .form-group label {
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   font-weight: 500;
   color: var(--text-color);
   font-size: 0.95rem;
@@ -88,7 +88,7 @@
   background-color: var(--surface-ground);
   border: 1px solid var(--surface-border);
   color: var(--text-color);
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   transition: border-color 0.2s ease;
 }
 
@@ -98,7 +98,7 @@
 
 :host ::ng-deep .input-field:focus {
   outline: none;
-  border-color: var(--primary-color, #22c55e);
+  border-color: var(--primary-color);
 }
 
 :host ::ng-deep .p-password {
@@ -112,7 +112,7 @@
   background-color: var(--surface-ground);
   border: 1px solid var(--surface-border);
   color: var(--text-color);
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   transition: border-color 0.2s ease;
 }
 
@@ -122,10 +122,9 @@
 
 :host ::ng-deep .p-password .p-inputtext:focus {
   outline: none;
-  border-color: var(--primary-color, #22c55e);
+  border-color: var(--primary-color);
   box-shadow: none;
 }
-
 
 .form-actions {
   display: flex;
@@ -139,28 +138,28 @@
 .remember-me {
   display: flex;
   align-items: center;
-  gap:  0.5rem;
+  gap: 0.5rem;
   color: var(--text-color);
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   font-size: 0.9rem;
 }
 
 .remember-me input[type="checkbox"] {
-  accent-color:  var(--primary-color, #22c55e);
+  accent-color: var(--primary-color);
   width: 18px;
   height: 18px;
   cursor: pointer;
 }
 
 .forgot-password {
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   font-size: 0.9rem;
   margin-left: auto;
 }
 
 .submit-btn {
   width: 100%;
-  background-color: var(--primary-color, #22c55e);
+  background-color: var(--primary-color);
   color: #000000;
   border: none;
   padding: 0.875rem;
@@ -170,7 +169,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  font-family: var(--font-family, 'Roboto', sans-serif);
+  font-family: var(--font-family);
   margin-top: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -178,7 +177,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #16a34a;
+  background-color: var(--primary-color-hover);
 }
 
 .submit-btn:active {

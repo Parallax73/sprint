@@ -2,7 +2,7 @@
   padding: 40px;
   max-width: 1200px;
   margin: 0 auto;
-  font-family: var(--font-family), serif;
+  font-family: var(--font-family);
 }
 
 .hub-header {
@@ -13,7 +13,7 @@
   font-size: 24px;
   font-weight: 600;
   color: var(--text-color);
-  font-family: var(--font-family-heading), serif;
+  font-family: var(--font-family-heading);
   margin-bottom: 8px;
 }
 
@@ -54,7 +54,7 @@
   margin-bottom: 12px;
   font-size: 24px;
   color: var(--primary-color);
-  font-family: var(--font-family-heading), serif;
+  font-family: var(--font-family-heading);
   font-weight: 600;
 }
 
