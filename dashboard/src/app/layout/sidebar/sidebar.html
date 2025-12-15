@@ -1,6 +1,17 @@
-<div class="sidebar">
+<div class="sidebar" [class.visible]="sidebarService.isOpen()">
   <div class="sidebar-header">
-    <img src="logo.svg" alt="Sprint logo"/>
-    <span>Sprint</span>
+    <p-button
+      icon="pi pi-bars"
+      [text]="true"
+      severity="secondary"
+      (onClick)="sidebarService.toggle()">
+    </p-button>
+    <span class="sidebar-title">Menu</span>
+  </div>
+
+  <div class="menu-items">
+    <p>Dashboard</p>
+    <p>Alerts</p>
+    <p>Rules</p>
   </div>
 </div>
