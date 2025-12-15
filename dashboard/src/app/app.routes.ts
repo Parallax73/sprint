@@ -23,6 +23,18 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('./features/home/home').then(m => m.Home)
+      },
+      {
+        path: 'alerts',
+        loadComponent: () => import('./features/alerts/alerts').then(m => m.Alert)
+      },
+      {
+        path: 'detection-rules',
+        loadComponent: () => import('./features/rules/rules').then(m => m.Rules)
+      },
+      {
+        path: 'audit-logs',
+        loadComponent: () => import('./features/audit/audit').then(m => m.Audit)
       }
     ]
   }
