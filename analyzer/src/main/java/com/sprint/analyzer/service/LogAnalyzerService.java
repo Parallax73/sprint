@@ -3,9 +3,9 @@ package com.sprint.analyzer.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sprint.analyzer.entity.Alert;
 import com.sprint.analyzer.entity.DetectionRule;
-import com.sprint.analyzer.repository.AlertRepository; // You need to create this simple repo
+import com.sprint.analyzer.repository.AlertRepository;
 import com.sprint.analyzer.repository.DetectionRuleRepository;
-import com.sprint.analyzer.utils.SecurityEvent; // The record you copied
+import com.sprint.analyzer.utils.SecurityEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.expression.Expression;
@@ -26,30 +26,38 @@ public class LogAnalyzerService {
     private final DetectionRuleRepository ruleRepository;
     private final AlertRepository alertRepository;
     private final ExpressionParser parser = new SpelExpressionParser();
-    private final ObjectMapper objectMapper = new ObjectMapper(); // To parse JSON logs
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @KafkaListener(topics = "${sprint.kafka.topic.raw-logs}", groupId = "sprint-analyzer-group")
     public void analyzeLog(Map<String, Object> rawLog) {
         log.info("Received log: {}", rawLog);
 
-        // 1. Map Raw Log to Security Event (Normalization)
-        // We assume the Ingest service sends a JSON structure matching our needs
-        SecurityEvent event = new SecurityEvent(
-                (String) rawLog.get("eventType"),
-                "Unknown", // If username isn't parsed yet
-                (String) rawLog.get("sourceIp"),
-                0,
-                (Map<String, String>) rawLog.get("metadata")
-        );
+        try {
 
-        // 2. Fetch Active Rules
-        List<DetectionRule> rules = ruleRepository.findAllByIsActiveTrue();
+            SecurityEvent event = mapToSecurityEvent(rawLog);
+            List<DetectionRule> rules = ruleRepository.findAllByIsActiveTrue();
+            evaluateRules(rules, event, rawLog);
 
-        // 3. Evaluate
+        } catch (Exception e) {
+
+            log.error("Critical processing failure. Sending to DLQ. Log: {}", rawLog, e);
+            throw new RuntimeException("DLQ Trigger", e);
+        }
+    }
+
+
+    @KafkaListener(topics = "${sprint.kafka.topic.raw-logs}.DLT", groupId = "sprint-analyzer-dlq-group")
+    public void processDeadLetter(Map<String, Object> failedLog) {
+        log.warn("💀 Received message in Dead Letter Topic: {}", failedLog);
+        // TODO: Save to a 'failed_events' table or send Slack notification
+    }
+
+    private void evaluateRules(List<DetectionRule> rules, SecurityEvent event, Map<String, Object> rawLog) {
         StandardEvaluationContext context = new StandardEvaluationContext(event);
 
         for (DetectionRule rule : rules) {
             try {
+
                 Expression exp = parser.parseExpression(rule.getConditionLogic());
                 Boolean match = exp.getValue(context, Boolean.class);
 
@@ -57,9 +65,20 @@ public class LogAnalyzerService {
                     triggerAlert(rule, event, rawLog.toString());
                 }
             } catch (Exception e) {
-                log.error("Rule evaluation failed for rule: {}", rule.getName(), e);
+
+                log.error("Rule evaluation failed for Rule ID: {}", rule.getName(), e);
             }
         }
+    }
+
+    private SecurityEvent mapToSecurityEvent(Map<String, Object> rawLog) {
+        return new SecurityEvent(
+                (String) rawLog.getOrDefault("eventType", "UNKNOWN"),
+                "Unknown",
+                (String) rawLog.getOrDefault("sourceIp", "0.0.0.0"),
+                0,
+                (Map<String, String>) rawLog.get("metadata")
+        );
     }
 
     private void triggerAlert(DetectionRule rule, SecurityEvent event, String rawPayload) {
@@ -74,6 +93,5 @@ public class LogAnalyzerService {
                 .build();
 
         alertRepository.save(alert);
-        // Future: Produce to 'alerts' topic for Discord/Slack notification
     }
 }
