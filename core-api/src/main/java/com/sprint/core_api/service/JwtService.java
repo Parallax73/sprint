@@ -8,11 +8,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.sprint.core_api.dto.response.AuthTokenResponse;
 import com.sprint.core_api.entity.RefreshToken;
+import com.sprint.core_api.entity.User;
 import com.sprint.core_api.repository.RefreshTokenRepository;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.sprint.core_api.enums.UserRole;
+import com.sprint.core_api.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ import java.util.UUID;
 @Slf4j
 public class JwtService {
 
+    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${jwt.secret}")
@@ -241,7 +244,8 @@ public class JwtService {
 
 
     private UserRole getUserRole(String username) {
-        // TODO: Fetch from your UserService or UserRepository
-        throw new UnsupportedOperationException("Implement getUserRole method");
+        return userRepository.findByUsername(username)
+                .map(User::getRole)
+                .orElseThrow(() -> new RuntimeException("User not found:  " + username));
     }
 }
