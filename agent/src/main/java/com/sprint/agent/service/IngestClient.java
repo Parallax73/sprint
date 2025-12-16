@@ -1,9 +1,10 @@
 package com.sprint.agent.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind. ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation. Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -13,6 +14,8 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent. atomic.AtomicLong;
 
 @Service
 @Slf4j
@@ -33,35 +36,63 @@ public class IngestClient {
     @Value("${agent.server.ip}")
     private String serverIp;
 
-    public void sendLog(String line, String eventType) {
-        try {
-            // Construct the Payload matching RawLogRequest in Ingest Service
-            Map<String, Object> payload = new HashMap<>();
-            payload.put("sourceIp", serverIp);
-            payload.put("serviceName", "sshd"); // Assuming we are watching SSH for now
-            payload.put("eventType", eventType);
-            payload.put("rawPayload", line);
-            payload.put("metadata", Map.of("host", agentName));
+    private final AtomicLong sentCount = new AtomicLong(0);
+    private final AtomicLong failedCount = new AtomicLong(0);
 
-            String json = objectMapper.writeValueAsString(payload);
+    public void sendLog(String line, String eventType, String serviceName, Map<String, String> parsedData) {
+        CompletableFuture. runAsync(() -> {
+            try {
+                Map<String, Object> payload = new HashMap<>();
+                payload. put("sourceIp", serverIp);
+                payload.put("serviceName", serviceName);
+                payload.put("eventType", eventType);
+                payload.put("rawPayload", line);
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(ingestUrl))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
+                Map<String, String> metadata = new HashMap<>(parsedData);
+                metadata.put("host", agentName);
+                metadata.put("agentVersion", "1.0.0");
 
-            httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                    .thenAccept(response -> {
-                        if (response.statusCode() != 202) {
-                            log.error("Failed to send log. Status: {}", response.statusCode());
-                        } else {
-                            log.debug("Log sent successfully: {}", eventType);
-                        }
-                    });
+                payload.put("metadata", metadata);
 
-        } catch (Exception e) {
-            log.error("Error sending log: {}", e.getMessage());
+                String json = objectMapper.writeValueAsString(payload);
+
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(ingestUrl))
+                        .header("Content-Type", "application/json")
+                        .timeout(Duration.ofSeconds(10))
+                        .POST(HttpRequest.BodyPublishers.ofString(json))
+                        . build();
+
+                httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                        .thenAccept(response -> {
+                            if (response.statusCode() == 202) {
+                                sentCount.incrementAndGet();
+                                log.debug("✅ Log sent:  {}", eventType);
+                            } else {
+                                failedCount.incrementAndGet();
+                                log. error("❌ Failed to send log.  Status: {}", response.statusCode());
+                            }
+                        })
+                        .exceptionally(ex -> {
+                            failedCount.incrementAndGet();
+                            log.error("❌ Network error sending log", ex);
+                            return null;
+                        });
+
+            } catch (Exception e) {
+                failedCount.incrementAndGet();
+                log.error("❌ Error preparing log", e);
+            }
+        });
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void logStats() {
+        long sent = sentCount.getAndSet(0);
+        long failed = failedCount.getAndSet(0);
+
+        if (sent > 0 || failed > 0) {
+            log.info("📊 Stats: {} sent, {} failed (last minute)", sent, failed);
         }
     }
 }
