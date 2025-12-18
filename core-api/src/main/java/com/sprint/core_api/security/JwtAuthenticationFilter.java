@@ -7,15 +7,16 @@ package com.sprint.core_api.security;
 import com.sprint.core_api.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http. HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j. Slf4j;
-import org. springframework.lang.NonNull;
-import org. springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org. springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
-    private static final List<String> PUBLIC_PATHS = List. of(
+    private static final List<String> PUBLIC_PATHS = List.of(
             "/api/v1/core/register",
             "/api/v1/core/login",
             "/api/v1/core/refresh",
@@ -59,28 +60,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         log.debug("Processing request: {} {}", request.getMethod(), requestPath);
 
-
         if (isPublicPath(requestPath)) {
             log.debug("Skipping JWT filter for public path: {}", requestPath);
-            filterChain. doFilter(request, response);
+            filterChain.doFilter(request, response);
             return;
         }
 
-        final String authHeader = request.getHeader("Authorization");
+        String jwt = null;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.debug("No Bearer token found, continuing filter chain");
-            filterChain. doFilter(request, response);
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("sprint-jwt".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (jwt == null) {
+            final String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                jwt = authHeader.substring(7);
+            }
+        }
+
+        if (jwt == null) {
+            log.debug("No token found in Cookie or Header, continuing filter chain");
+            filterChain.doFilter(request, response);
             return;
         }
 
         try {
-            final String jwt = authHeader.substring(7);
-
             var decodedJWT = jwtService.verifyToken(jwt);
             final String username = decodedJWT.getSubject();
             final String tokenType = decodedJWT.getClaim("token_type").asString();
-
 
             if (!"access".equals(tokenType)) {
                 log.warn("Invalid token type used for authentication: {}", tokenType);
@@ -99,7 +112,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 log.debug("Authenticated user: {}", username);
@@ -109,7 +121,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.error("Cannot set user authentication: {}", e.getMessage());
         }
 
-        filterChain. doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 
 
