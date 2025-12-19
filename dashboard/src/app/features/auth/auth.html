@@ -3,7 +3,7 @@
 
     <div class="header">
       <div class="logo">
-       <img src="logo.svg" alt="Sprint logo"/>
+        <img src="logo.svg" alt="Sprint logo"/>
       </div>
 
       <h2 class="title">{{ authState() ? 'Welcome Back!' : 'Create Account' }}</h2>
@@ -24,19 +24,37 @@
       @if(!authState()) {
         <div class="form-group">
           <label for="fullname">Full Name</label>
-          <input pInputText id="fullname" type="text" placeholder="John Doe" class="input-field" />
+          <input
+            pInputText
+            id="fullname"
+            [(ngModel)]="fullName"
+            type="text"
+            placeholder="John Doe"
+            class="input-field" />
         </div>
 
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input pInputText id="username" type="text" placeholder="JohnDoe1" class="input-field" />
+          <input
+            pInputText
+            id="username"
+            [(ngModel)]="username"
+            type="text"
+            placeholder="JohnDoe1"
+            class="input-field" />
         </div>
       }
 
       <div class="form-group">
         <label for="email">Email Address</label>
-        <input pInputText id="email" type="text" placeholder="Email address" class="input-field" />
+        <input
+          pInputText
+          id="email"
+          [(ngModel)]="email"
+          type="text"
+          placeholder="Email address"
+          class="input-field" />
       </div>
 
       <div class="form-group">
@@ -62,7 +80,7 @@
         </div>
       }
 
-      <button pButton class="submit-btn">
+      <button pButton class="submit-btn" (click)="onSubmit()">
         <i class="pi pi-user"></i>
         <span>{{ authState() ? 'Sign In' : 'Sign Up' }}</span>
       </button>
