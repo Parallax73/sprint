@@ -54,10 +54,6 @@ public class SecurityConfig {
         http
                 // Disable CSRF (not needed for stateless JWT)
                 .csrf(AbstractHttpConfigurer::disable)
-
-                // Configure CORS
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
                 // Configure authorization rules
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints (no authentication required)
@@ -131,41 +127,5 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * CORS configuration
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-
-                // Angular dev serve
-                "http://localhost:4200"
-        ));
-
-        configuration.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
-        ));
-
-        configuration.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type",
-                "X-Requested-With",
-                "Accept"
-        ));
-
-        configuration.setExposedHeaders(List.of(
-                "Authorization",
-                "X-Total-Count"
-        ));
-
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-
-        return source;
-    }
 }
